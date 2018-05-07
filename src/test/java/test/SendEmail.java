@@ -1,9 +1,11 @@
-package selenium;
+package test;
 
+import Core.InitDriver;
 import PageObjects.Gmail.ComposeModalPage;
 import PageObjects.Gmail.EmailMessagePage;
 import PageObjects.Gmail.LoginPage;
 import PageObjects.Gmail.MainPage;
+import Services.EmailService;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
@@ -47,8 +49,8 @@ public class TestEmail {
         EmailMessagePage emailMessagePage = new EmailMessagePage();
         Assert.assertTrue(emailMessagePage.isMessageDisplayed(_messageText));
 
-        //clean test data using API request
-
+        //clean test data
+        EmailService.clean(_username, _password);
     }
 
     @AfterTest
