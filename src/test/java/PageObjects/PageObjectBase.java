@@ -6,22 +6,16 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import selenium.InitDriver;
+import Core.InitDriver;
 
 public abstract class PageObjectBase {
+
     private WebDriver _driver = InitDriver.getInstance();
     protected int _deafultTimeOutSec = 30;
 
     protected WebElement GetElement(By locator, int timeout){
         WebDriverWait wait = new WebDriverWait(_driver, timeout);
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-
-        return _driver.findElement(locator);
-    }
-
-    protected WebElement GetElementPresent(By locator, int timeout){
-        WebDriverWait wait = new WebDriverWait(_driver, timeout);
-        wait.until(ExpectedConditions.presenceOfElementLocated(locator));
 
         return _driver.findElement(locator);
     }

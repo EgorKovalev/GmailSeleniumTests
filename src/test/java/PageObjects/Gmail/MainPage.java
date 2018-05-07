@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class MainPage extends PageObjectBase {
+
     private int _emailMessageWaiterSec = 60;
 
     public WebElement ComposeButton(){
@@ -22,6 +23,4 @@ public class MainPage extends PageObjectBase {
     public WebElement EmailMessage(String title){
         return GetElement(By.xpath("//div/span/b[.='" + title + "']"), _deafultTimeOutSec);
     }
-
-    //div[@data-message-id]//div[contains(text(),'Hello, World!')]
 }

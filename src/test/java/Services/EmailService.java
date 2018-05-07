@@ -1,4 +1,4 @@
-package selenium;
+package Services;
 
 import java.util.Properties;
 import javax.mail.Flags;
@@ -11,34 +11,30 @@ import javax.mail.Store;
 
 public class EmailService {
 
-    public static void clean(String user, String password)
-    {
-        String host = "imap.gmail.com";
-        String port = "993";
+    private static String _host = "imap.gmail.com";
+    private static String _port = "993";
 
+    /* Use to clean INBOX folder */
+    public static void clean(String user, String password, String folder)
+    {
         Properties properties = new Properties();
 
-        // server setting
-        properties.put("mail.imap.host", host);
-        properties.put("mail.imap.port", port);
+        properties.put("mail.imap.host", _host);
+        properties.put("mail.imap.port", _port);
 
-        // SSL setting
         properties.setProperty("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         properties.setProperty("mail.imap.socketFactory.fallback", "false");
-        properties.setProperty("mail.imap.socketFactory.port", String.valueOf(port));
+        properties.setProperty("mail.imap.socketFactory.port", String.valueOf(_port));
 
         Session session = Session.getDefaultInstance(properties);
 
         try {
-            // connects to the message store
             Store store = session.getStore("imap");
             store.connect(user, password);
 
-            // opens the inbox folder
-            Folder folderInbox = store.getFolder("INBOX");
+            Folder folderInbox = store.getFolder(folder);
             folderInbox.open(Folder.READ_WRITE);
 
-            // fetches new messages from server
             Message[] arrayMessages = folderInbox.getMessages();
 
             for (int i = 0; i < arrayMessages.length; i++) {
@@ -47,11 +43,9 @@ public class EmailService {
                 message.setFlag(Flags.Flag.DELETED, true);
             }
 
-            // expunges the folder to remove messages which are marked deleted
             boolean expunge = true;
             folderInbox.close(expunge);
 
-            // disconnect
             store.close();
 
         } catch (NoSuchProviderException ex) {
